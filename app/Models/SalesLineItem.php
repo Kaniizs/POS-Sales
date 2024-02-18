@@ -10,17 +10,20 @@ class SalesLineItem extends Model
 {
     use HasFactory;
 
-    protected $attributes = [
-        'total' => 0,
-    ];
+    protected $fillable = ['quantity', 'price']; // Allow mass assignment for these fields
 
-    public function sale() : BelongsTo
+    public function sale(): BelongsTo
     {
         return $this->belongsTo(Sale::class);
     }
 
-    public function item() : BelongsTo
+    public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function getSubtotalAttribute(): float
+    {
+        return $this->quantity * $this->price;
     }
 }

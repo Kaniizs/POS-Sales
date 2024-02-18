@@ -10,15 +10,19 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $attributes = [
-        "name" => "Item Name",
-        "description" => "Item Description",
-        "price" => 0
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
     ];
 
-    public function sales_line_items(): HasMany
+    protected $casts = [
+        'price' => 'float',
+    ];
+
+    public function salesLineItems(): HasMany
     {
         return $this->hasMany(SalesLineItem::class);
     }
-    
+
 }
