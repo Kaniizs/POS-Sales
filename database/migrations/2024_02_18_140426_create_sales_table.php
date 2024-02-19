@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('date')->nullable(false);
             $table->timestamps();
         });
         
@@ -25,6 +24,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('sales');
-        Schema::dropIfExists('items');
     }
 };

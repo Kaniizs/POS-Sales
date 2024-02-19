@@ -7,17 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+
 class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'date',
-    ];
-
-    protected $casts = [
-        'date' => 'datetime',
-    ];
 
     public function salesLineItems(): HasMany
     {
@@ -29,17 +23,11 @@ class Sale extends Model
         return $this->hasOne(Payment::class);
     }
 
-    // Additional methods/properties:
-
-    public function getTotalAmount(): float
+    public function getTotalAttribute(): float
     {
-        // Calculate total amount using sales line items
-        return $this->salesLineItems->sum('subtotal');
+        return $this->salesLineItems->sum('total');
     }
 
-    public function getFormattedDate(): string
-    {
-        // Format date for display
-        return $this->date->format('Y-m-d H:i:s');
-    }
+
+
 }

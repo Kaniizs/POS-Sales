@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('paymentDate')->nullable(false);
             $table->boolean('paymentStatus');
             $table->float('amount');
+            $table->unsignedBigInteger("sale_id")->nullable();
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->unsignedBigInteger("member_id")->nullable();
             $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');

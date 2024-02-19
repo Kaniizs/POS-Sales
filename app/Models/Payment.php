@@ -10,10 +10,8 @@ class Payment extends Model
     use HasFactory;
 
     protected $attributes = [
-        'amount' => 0,
-        'paymentdate' => 'current_timestamp',
+        'member_id' => null,
         'paymentstatus' => 'pending',
-        'member_id' => 0,
     ];
 
     public function Member()
