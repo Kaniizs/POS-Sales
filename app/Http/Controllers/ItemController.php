@@ -8,66 +8,69 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    public function index()
-    {
-        return Item::all();
-    }
-
-    public function createItem(Request $request)
+    public function create_item(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:items,name|max:255',
-            'description' => 'required|max:1000',
-            'price' => 'required|numeric|min:0',
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
         ], [
-            'name.required' => 'Please enter a name for the item.',
-            'name.unique' => 'That name is already taken. Please choose another.',
-            'description.required' => 'Please provide a description for the item.',
-            'price.required' => 'Please enter the price of the item.',
-            'price.numeric' => 'The price must be a number.',
-            'price.min' => 'The price cannot be negative.',
+            'name.required' => 'Name is required',
+            'description.required' => 'Description is required',
+            'price.required' => 'Price is required',
+            'price.numeric' => 'Price must be a number',
+            'quantity.required' => 'Quantity is required',
+            'quantity.numeric' => 'Quantity must be a number',
         ]);
 
-        $item = Item::create($request->validated());
+        $item = new Item();
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->price = $request->price;
+        $item->quantity = $request->quantity;
+        $item->save();
 
-        return response()->json([
-            'message' => 'Item created successfully!',
-            'data' => $item,
-        ], 201);
-
+        return redirect()->route('items');
 
     }
 
-    public function removeItem(Request $request, Item $item)
+    public function update_item(Request $request)
     {
+        $request->validate([
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
+        ], [
+            'name.required' => 'Name is required',
+            'description.required' => 'Description is required',
+            'price.required' => 'Price is required',
+            'price.numeric' => 'Price must be a number',
+            'quantity.required' => 'Quantity is required',
+            'quantity.numeric' => 'Quantity must be a number',
+        ]);
+
+        $item = Item::find($request->id);
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->price = $request->price;
+        $item->quantity = $request->quantity;
+        $item->save();
+
+        return redirect()->route('items');
+    }
+
+    public function delete_item(Request $request)
+    {
+        $item = Item::find($request->id);
         $item->delete();
 
-        return response()->json([
-            'message' => 'Item removed successfully!',
-        ], 200);
+        return redirect()->route('items');
     }
 
-    public function updateItem(Request $request, Item $item)
+    public function get_all_items(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:items,name,' . $item->id . '|max:255',
-            'description' => 'required|max:1000',
-            'price' => 'required|numeric|min:0',
-        ], [
-            'name.required' => 'Please enter a name for the item.',
-            'name.unique' => 'That name is already taken. Please choose another.',
-            'description.required' => 'Please provide a description for the item.',
-            'price.required' => 'Please enter the price of the item.',
-            'price.numeric' => 'The price must be a number.',
-            'price.min' => 'The price cannot be negative.',
-        ]);
-
-        $item->update($request->validated());
-
-        return response()->json([
-            'message' => 'Item updated successfully!',
-            'data' => $item,
-        ], 200);
+        $items = Item::all();
+        return view('items', ['items' => $items]);
     }
 
 

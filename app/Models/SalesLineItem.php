@@ -10,7 +10,7 @@ class SalesLineItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['quantity', 'price']; // Allow mass assignment for these fields
+    protected $fillable = ['quantity', 'price']; 
 
     public function sale(): BelongsTo
     {

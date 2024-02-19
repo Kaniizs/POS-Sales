@@ -14,8 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->dateTime('paymentDate')->nullable(false);
             $table->boolean('paymentStatus');
-            $table->string('member_id');
             $table->float('amount');
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
+            $table->unsignedBigInteger("member_id")->nullable();
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
             $table->timestamps();
 
         });

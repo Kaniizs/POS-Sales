@@ -12,20 +12,16 @@ use Illuminate\Support\Facades\Redirect;
 class SaleController extends Controller
 {
 
-    // CRUD methods for sales and sales line items
-     
-    public function index()
+    public function open_sale(Request $request)
     {
-        $sales = Sale::all();
-        return view('sales.index', compact('sales'));
-    }
+        // create a new sale with date and time
+        $sale = new Sale();
+        $sale->save();
 
-    public function openSale(Request $request)
-    {
-        $sale = Sale::create([
-            'date' => now()
-        ]);
-        return Redirect::to('/sales/' . $sale->id);
+        // redirect to the sale page
+        return Redirect::route('sale', ['id' => $sale->id]);
+
+        
     }
 
     
